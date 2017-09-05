@@ -138,6 +138,12 @@ class Dispatcher {
             $result = new Data($raw);
         } elseif ($raw instanceof \Exception) {
             $data = $raw instanceof \JsonSerializable ? $raw->jsonSerialize() : ['message' => $raw->getMessage(), 'status' => $raw->getCode()];
+
+            // Make it easier to debug unit tests.
+            if (APPLICATION === 'Vanilla Tests') {
+                $data += ['trace' => $raw->getTraceAsString()];
+            }
+
             $result = new Data($data, $raw->getCode());
         } elseif ($raw instanceof \JsonSerializable) {
             $result = new Data((array)$raw->jsonSerialize());
