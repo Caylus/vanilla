@@ -62,6 +62,10 @@ class InternalClient extends HttpClient {
                 $message .= ' '.implode(' ', array_column($body['errors'], 'message'));
             }
 
+            if (!empty($body['trace'])) {
+                $message .= "\n".$body['trace'];
+            }
+
             throw new \Exception($message, $response->getStatusCode());
         }
     }
